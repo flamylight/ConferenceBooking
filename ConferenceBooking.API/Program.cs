@@ -12,6 +12,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options => options.SwaggerEndpoint(
+        "/openapi/v1.json", "ConferenceBooking API v1"));   
 }
 
 app.UseHttpsRedirection();
