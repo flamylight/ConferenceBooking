@@ -1,6 +1,7 @@
 using ConferenceBooking.DAL.Data;
 using ConferenceBooking.DAL.Interfaces;
 using ConferenceBooking.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceBooking.DAL.Repositories;
 
@@ -14,6 +15,8 @@ public class RoomRepository(AppDbContext dbContext): IRoomRepository
 
     public async Task<Room?> GetByIdAsync(Guid id)
     {
-        return await dbContext.Rooms.FindAsync(id);
+        return await dbContext.Rooms
+            .Include(r => r.Amenities)
+            .FirstOrDefaultAsync(r => r.Id == id);
     }
 }
