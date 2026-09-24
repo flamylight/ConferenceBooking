@@ -1,6 +1,11 @@
+using ConferenceBooking.BLL.Extensions;
+using ConferenceBooking.DAL.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDal(builder.Configuration);
+builder.Services.AddBll();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

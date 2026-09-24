@@ -1,0 +1,19 @@
+using ConferenceBooking.DAL.Data;
+using ConferenceBooking.DAL.Interfaces;
+using ConferenceBooking.DAL.Models;
+
+namespace ConferenceBooking.DAL.Repositories;
+
+public class RoomRepository(AppDbContext dbContext): IRoomRepository
+{
+    public async Task AddAsync(Room room)
+    {
+        await dbContext.Rooms.AddAsync(room);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Room?> GetByIdAsync(Guid id)
+    {
+        return await dbContext.Rooms.FindAsync(id);
+    }
+}
