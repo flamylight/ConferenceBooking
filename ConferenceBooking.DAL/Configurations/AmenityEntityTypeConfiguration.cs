@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ConferenceBooking.DAL.Configurations;
 
-public class RoomEntityTypeConfiguration: IEntityTypeConfiguration<Room>
+public class AmenityEntityTypeConfiguration: IEntityTypeConfiguration<Amenity>
 {
-    public void Configure(EntityTypeBuilder<Room> builder)
+    public void Configure(EntityTypeBuilder<Amenity> builder)
     {
         builder.HasKey(x => x.Id);
         
@@ -14,14 +14,8 @@ public class RoomEntityTypeConfiguration: IEntityTypeConfiguration<Room>
             .HasMaxLength(100)
             .IsRequired();
         
-        builder.Property(x => x.Capacity)
-            .IsRequired();
-        
-        builder.Property(x => x.HourlyPrice)
+        builder.Property(x => x.Price)
             .IsRequired()
             .HasPrecision(10, 2);
-
-        builder.HasMany(r => r.Amenities)
-            .WithMany();
     }
 }

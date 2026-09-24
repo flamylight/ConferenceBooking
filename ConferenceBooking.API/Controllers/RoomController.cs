@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConferenceBooking.API.Controllers
 {
-    [Route("api/room")]
+    [Route("api/rooms")]
     [ApiController]
     public class RoomController(IRoomService roomService) : ControllerBase
     {
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateRoomRequest request)
+        public async Task<ActionResult<CreateRoomResponse>> Create([FromBody] CreateRoomRequest request)
         {
             var roomId = await roomService.CreateAsync(request);
             return CreatedAtAction(

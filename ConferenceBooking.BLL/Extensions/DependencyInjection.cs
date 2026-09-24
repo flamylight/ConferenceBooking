@@ -11,6 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddBll(this IServiceCollection services)
     {
         services.AddScoped<IRoomService, RoomService>();
+        services.AddScoped<IAmenityService, AmenityService>();
 
         services.AddValidatorsFromAssemblyContaining<CreateRoomRequestValidator>();
         
