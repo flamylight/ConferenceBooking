@@ -1,3 +1,4 @@
+using ConferenceBooking.API.Middlewares;
 using ConferenceBooking.BLL.Extensions;
 using ConferenceBooking.DAL.Extensions;
 
@@ -7,11 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDal(builder.Configuration);
 builder.Services.AddBll();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
