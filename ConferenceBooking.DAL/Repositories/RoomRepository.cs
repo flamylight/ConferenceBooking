@@ -19,4 +19,10 @@ public class RoomRepository(AppDbContext dbContext): IRoomRepository
             .Include(r => r.Amenities)
             .FirstOrDefaultAsync(r => r.Id == id);
     }
+    
+    public async Task UpdateAsync(Room room)
+    {
+        dbContext.Rooms.Update(room);
+        await dbContext.SaveChangesAsync();
+    }
 }

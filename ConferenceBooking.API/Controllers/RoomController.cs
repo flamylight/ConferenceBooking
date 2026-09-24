@@ -24,5 +24,12 @@ namespace ConferenceBooking.API.Controllers
             var room = await roomService.GetByIdAsync(id);
             return Ok(room);
         }
+
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRoomRequest request)
+        {
+            await roomService.UpdateAsync(id, request);
+            return NoContent();
+        }
     }
 }

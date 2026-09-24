@@ -8,12 +8,12 @@ using FluentValidation;
 namespace ConferenceBooking.BLL.Services;
 
 public class AmenityService(
-    IValidator<CreateAmenityRequest> validator,
+    IValidator<CreateAmenityRequest> createValidator,
     IAmenityRepository amenityRepository): IAmenityService
 {
     public async Task<Guid> CreateAsync(CreateAmenityRequest request)
     {
-        await validator.ValidateAndThrowAsync(request);
+        await createValidator.ValidateAndThrowAsync(request);
 
         var amenity = new Amenity
         {

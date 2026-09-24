@@ -11,28 +11,14 @@ namespace ConferenceBooking.BLL.Services;
 public class RoomService(
     IRoomRepository roomRepository,
     IAmenityRepository amenityRepository,
-    IValidator<CreateRoomRequest> validator): IRoomService
+    IValidator<CreateRoomRequest> createValidator,
+    IValidator<UpdateRoomRequest> updateValidator): IRoomService
 {
     public async Task<Guid> CreateAsync(CreateRoomRequest request)
     {
-        await validator.ValidateAndThrowAsync(request);
+        await createValidator.ValidateAndThrowAsync(request);
 
-        List<Amenity> amenities = [];
-
-        if (request.AmenityIds.Count > 0)
-        {
-            var distinctAmenityIds = request.AmenityIds.Distinct().ToList();
-            
-            amenities = await amenityRepository.GetByIdsAsync(distinctAmenityIds);
-
-            if (amenities.Count != distinctAmenityIds.Count)
-            {
-                var notFoundAmenityIds = distinctAmenityIds
-                    .Except(amenities.Select(a => a.Id));
-                throw new NotFoundException(
-                    $"Amenities with Ids [{string.Join(", ", notFoundAmenityIds)}] were not found.");
-            }
-        }
+        List<Amenity> amenities = await GetValidAmenitiesAsync(request.AmenityIds);
         
         var room = new Room
         {
@@ -68,5 +54,47 @@ public class RoomService(
                 Price = a.Price
             }).ToList()
         };
+    }
+
+    public async Task UpdateAsync(Guid id, UpdateRoomRequest request)
+    {
+        await updateValidator.ValidateAndThrowAsync(request);
+        
+        var room = await roomRepository.GetByIdAsync(id);
+
+        if (room is null)
+        {
+            throw new NotFoundException($"Room with id '{id}' was not found.");
+        }
+
+        room.Name = request.Name;
+        room.Capacity = request.Capacity;
+        room.HourlyPrice = request.HourlyPrice;
+        
+        List<Amenity> newAmenities = await GetValidAmenitiesAsync(request.AmenityIds);
+        
+        room.Amenities = newAmenities;
+        await roomRepository.UpdateAsync(room);
+    }
+
+    private async Task<List<Amenity>> GetValidAmenitiesAsync(List<Guid> amenityIds)
+    {
+        if (amenityIds.Count == 0)
+        {
+            return [];
+        }
+        
+        var distinctAmenityIds = amenityIds.Distinct().ToList();
+        var amenities = await amenityRepository.GetByIdsAsync(distinctAmenityIds);
+        
+        if (amenities.Count != distinctAmenityIds.Count)
+        {
+            var notFoundAmenityIds = distinctAmenityIds
+                .Except(amenities.Select(a => a.Id));
+            throw new NotFoundException(
+                $"Amenities with Ids [{string.Join(", ", notFoundAmenityIds)}] were not found.");
+        }
+        
+        return amenities;
     }
 }
