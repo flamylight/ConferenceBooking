@@ -27,6 +27,18 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
                 "Not Found",
                 notFoundException.Message,
                 null),
+            
+            ConflictException conflictException => (
+                StatusCodes.Status409Conflict,
+                "Conflict",
+                conflictException.Message,
+                null),
+            
+            BadRequestException badRequestException => (
+                StatusCodes.Status400BadRequest,
+                "Bad Request",
+                badRequestException.Message,
+                null),
 
             _ => (
                 StatusCodes.Status500InternalServerError,

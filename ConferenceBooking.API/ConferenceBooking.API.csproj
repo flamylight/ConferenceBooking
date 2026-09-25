@@ -22,8 +22,4 @@
       <ProjectReference Include="..\ConferenceBooking.DAL\ConferenceBooking.DAL.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
 </Project>

@@ -25,7 +25,7 @@ public class AmenityService(
         return amenity.Id;
     }
 
-    public async Task<GetAmenityResponse> GetByIdAsync(Guid id)
+    public async Task<AmenityResponse> GetByIdAsync(Guid id)
     {
         var amenity = await amenityRepository.GetByIdAsync(id);
 
@@ -34,7 +34,7 @@ public class AmenityService(
             throw new NotFoundException($"Amenity with id '{id}' was not found.");
         }
 
-        return new GetAmenityResponse
+        return new AmenityResponse
         {
             Id = amenity.Id,
             Name = amenity.Name,

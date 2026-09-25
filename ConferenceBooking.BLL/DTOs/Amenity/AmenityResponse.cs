@@ -1,6 +1,6 @@
 namespace ConferenceBooking.BLL.DTOs.Amenity;
 
-public class GetAmenityResponse
+public class AmenityResponse
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }

@@ -19,7 +19,7 @@ namespace ConferenceBooking.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<GetRoomResponse>> GetById([FromRoute] Guid id)
+        public async Task<ActionResult<RoomResponse>> GetById([FromRoute] Guid id)
         {
             var room = await roomService.GetByIdAsync(id);
             return Ok(room);

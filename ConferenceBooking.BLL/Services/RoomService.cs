@@ -32,7 +32,7 @@ public class RoomService(
         return room.Id;
     }
 
-    public async Task<GetRoomResponse> GetByIdAsync(Guid id)
+    public async Task<RoomResponse> GetByIdAsync(Guid id)
     {
         var room = await roomRepository.GetByIdAsync(id);
 
@@ -41,13 +41,13 @@ public class RoomService(
             throw new NotFoundException($"Room with id '{id}' was not found.");
         }
 
-        return new GetRoomResponse
+        return new RoomResponse
         {
             Id = room.Id,
             Name = room.Name,
             Capacity = room.Capacity,
             HourlyPrice = room.HourlyPrice,
-            Amenities = room.Amenities.Select(a => new GetAmenityResponse
+            Amenities = room.Amenities.Select(a => new AmenityResponse
             {
                 Id = a.Id,
                 Name = a.Name,
