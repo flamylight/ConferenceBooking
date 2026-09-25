@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ConferenceBooking.BLL\ConferenceBooking.BLL.csproj" />
+      <ProjectReference Include="..\ConferenceBooking.DAL\ConferenceBooking.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+      <PackageReference Include="Moq" Version="4.21.0" />
+      <PackageReference Include="xunit.v3" Version="4.0.1" />
+    </ItemGroup>
+
+</Project>
