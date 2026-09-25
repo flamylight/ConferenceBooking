@@ -35,4 +35,9 @@ public class RoomRepository(AppDbContext dbContext): IRoomRepository
                         && !r.Bookings.Any(b => b.StartTime < end && b.EndTime > start))
             .ToListAsync();
     }
+
+    public async Task<List<Room>> GetAllAsync()
+    {
+        return await dbContext.Rooms.ToListAsync();
+    }
 }

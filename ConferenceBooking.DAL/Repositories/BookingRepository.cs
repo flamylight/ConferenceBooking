@@ -33,4 +33,13 @@ public class BookingRepository(AppDbContext dbContext): IBookingRepository
         return await dbContext.Bookings
             .AnyAsync(b => b.RoomId == roomId && b.EndTime > start);
     }
+
+    public async Task<List<Booking>> GetBookingsForPeriodAsync(DateTime start, DateTime end)
+    {
+        return await dbContext.Bookings
+            .Include(b => b.Room)
+            .Include(b => b.Amenities)
+            .Where(b => b.StartTime >= start && b.EndTime <= end)
+            .ToListAsync();
+    }
 }
