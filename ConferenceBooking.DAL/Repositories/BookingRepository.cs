@@ -27,4 +27,10 @@ public class BookingRepository(AppDbContext dbContext): IBookingRepository
             .Include(b => b.Amenities)
             .FirstOrDefaultAsync(b => b.Id == id);
     }
+
+    public async Task<bool> HasFutureBookingsAsync(Guid roomId, DateTime start)
+    {
+        return await dbContext.Bookings
+            .AnyAsync(b => b.RoomId == roomId && b.EndTime > start);
+    }
 }

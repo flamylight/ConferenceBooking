@@ -17,7 +17,7 @@ public class RoomRepository(AppDbContext dbContext): IRoomRepository
     {
         return await dbContext.Rooms
             .Include(r => r.Amenities)
-            .FirstOrDefaultAsync(r => r.Id == id);
+            .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
     }
     
     public async Task UpdateAsync(Room room)

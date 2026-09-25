@@ -31,5 +31,12 @@ namespace ConferenceBooking.API.Controllers
             await roomService.UpdateAsync(id, request);
             return NoContent();
         }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            await roomService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace ConferenceBooking.BLL.Services;
 public class RoomService(
     IRoomRepository roomRepository,
     IAmenityRepository amenityRepository,
+    IBookingRepository bookingRepository,
     IValidator<CreateRoomRequest> createValidator,
     IValidator<UpdateRoomRequest> updateValidator): IRoomService
 {
@@ -96,5 +97,22 @@ public class RoomService(
         }
         
         return amenities;
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var room = await roomRepository.GetByIdAsync(id);
+        if (room is null)
+        {
+            throw new NotFoundException($"Room with id '{id}' was not found.");
+        }
+        
+        var hasFutureBookings = await bookingRepository.HasFutureBookingsAsync(room.Id, DateTime.UtcNow);
+        if (hasFutureBookings)
+        {
+            throw new ConflictException("Cannot delete room because it has active or future bookings.");
+        }
+        room.IsDeleted = true;
+        await roomRepository.UpdateAsync(room);
     }
 }
