@@ -8,4 +8,5 @@ public interface IRoomService
     Task<RoomResponse> GetByIdAsync(Guid id);
     Task UpdateAsync(Guid id, UpdateRoomRequest request);
     Task DeleteAsync(Guid id);
+    Task<List<RoomResponse>> GetAvailableRoomsAsync(AvailableRoomsFilterRequest request);
 }

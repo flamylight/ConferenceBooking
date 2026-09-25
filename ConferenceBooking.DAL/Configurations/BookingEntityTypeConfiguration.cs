@@ -21,7 +21,7 @@ public class BookingEntityTypeConfiguration: IEntityTypeConfiguration<Booking>
             .HasPrecision(10, 2);
 
         builder.HasOne(b => b.Room)
-            .WithMany()
+            .WithMany(r => r.Bookings)
             .HasForeignKey(b => b.RoomId)
             .OnDelete(DeleteBehavior.Restrict);
         

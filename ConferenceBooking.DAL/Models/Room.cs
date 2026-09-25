@@ -8,4 +8,5 @@ public class Room
     public bool IsDeleted { get; set; } = false;
     public decimal HourlyPrice { get; set; }
     public ICollection<Amenity> Amenities { get; set; } = [];
+    public ICollection<Booking> Bookings { get; set; } = [];
 }

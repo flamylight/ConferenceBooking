@@ -1,6 +1,6 @@
-using ConferenceBooking.BLL.DTOs.Amenity;
 using ConferenceBooking.BLL.DTOs.Room;
 using ConferenceBooking.BLL.Exceptions;
+using ConferenceBooking.BLL.Extensions.Mappings;
 using ConferenceBooking.BLL.Interfaces;
 using ConferenceBooking.DAL.Interfaces;
 using ConferenceBooking.DAL.Models;
@@ -13,6 +13,7 @@ public class RoomService(
     IAmenityRepository amenityRepository,
     IBookingRepository bookingRepository,
     IValidator<CreateRoomRequest> createValidator,
+    IValidator<AvailableRoomsFilterRequest> availableRoomsFilterValidator,
     IValidator<UpdateRoomRequest> updateValidator): IRoomService
 {
     public async Task<Guid> CreateAsync(CreateRoomRequest request)
@@ -42,19 +43,7 @@ public class RoomService(
             throw new NotFoundException($"Room with id '{id}' was not found.");
         }
 
-        return new RoomResponse
-        {
-            Id = room.Id,
-            Name = room.Name,
-            Capacity = room.Capacity,
-            HourlyPrice = room.HourlyPrice,
-            Amenities = room.Amenities.Select(a => new AmenityResponse
-            {
-                Id = a.Id,
-                Name = a.Name,
-                Price = a.Price
-            }).ToList()
-        };
+        return room.ToRoomResponse();
     }
 
     public async Task UpdateAsync(Guid id, UpdateRoomRequest request)
@@ -114,5 +103,15 @@ public class RoomService(
         }
         room.IsDeleted = true;
         await roomRepository.UpdateAsync(room);
+    }
+
+    public async Task<List<RoomResponse>> GetAvailableRoomsAsync(AvailableRoomsFilterRequest request)
+    {
+        await availableRoomsFilterValidator.ValidateAndThrowAsync(request);
+
+        var rooms = await roomRepository
+            .GetAvailableRoomsAsync(request.StartTime, request.EndTime, request.MinCapacity);
+
+        return rooms.Select(r => r.ToRoomResponse()).ToList();
     }
 }

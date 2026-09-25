@@ -25,4 +25,14 @@ public class RoomRepository(AppDbContext dbContext): IRoomRepository
         dbContext.Rooms.Update(room);
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<Room>> GetAvailableRoomsAsync(DateTime start, DateTime end, int minCapacity)
+    {
+        return await dbContext.Rooms
+            .Include(r => r.Amenities)
+            .Where(r => !r.IsDeleted 
+                        && r.Capacity >= minCapacity
+                        && !r.Bookings.Any(b => b.StartTime < end && b.EndTime > start))
+            .ToListAsync();
+    }
 }

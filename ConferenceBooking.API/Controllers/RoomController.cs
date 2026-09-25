@@ -38,5 +38,13 @@ namespace ConferenceBooking.API.Controllers
             await roomService.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<RoomResponse>>> GetAvailableRooms(
+            [FromQuery] AvailableRoomsFilterRequest request)
+        {
+            var rooms = await roomService.GetAvailableRoomsAsync(request);
+            return Ok(rooms);
+        }
     }
 }
