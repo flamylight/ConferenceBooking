@@ -1,5 +1,6 @@
 using ConferenceBooking.API.Middlewares;
 using ConferenceBooking.BLL.Extensions;
+using ConferenceBooking.DAL.Data;
 using ConferenceBooking.DAL.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,12 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbInitializer.SeedAsync(dbContext);   
+}
 
 app.UseExceptionHandler();
 
