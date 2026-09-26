@@ -24,4 +24,9 @@ public class AmenityRepository(AppDbContext dbContext): IAmenityRepository
             .Where(a => ids.Contains(a.Id))
             .ToListAsync();
     }
+    
+    public async Task<List<Amenity>> GetAllAsync()
+    {
+        return await dbContext.Amenities.ToListAsync();
+    }   
 }

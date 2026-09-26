@@ -9,9 +9,17 @@ namespace ConferenceBooking.API.Controllers
     public class ReportController(IReportService reportService) : ControllerBase
     {
         [HttpGet("revenue")]
-        public async Task<ActionResult<RevenueReportResponse>> GetRevenueReport([FromQuery] RevenueReportRequest request)
+        public async Task<ActionResult<RevenueReportResponse>> GetRevenueReport(
+            [FromQuery] RevenueReportRequest request)
         {
             return Ok(await reportService.GetRevenueReportAsync(request));
+        }
+        
+        [HttpGet("amenities")]
+        public async Task<ActionResult<AmenityReportResponse>> GetAmenityReport(
+            [FromQuery] AmenityReportRequest request)
+        {
+            return Ok(await reportService.GetAmenityReportAsync(request));
         }
     }
 }
